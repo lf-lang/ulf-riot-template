@@ -1,0 +1,7 @@
+.git/
+RIOT/
+bin/
+build/
+src-gen/
+__pycache__/
+*.pyc

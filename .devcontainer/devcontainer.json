@@ -1,0 +1,27 @@
+{
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "hostRequirements": {
+    "cpus": 1
+  },
+  "waitFor": "postCreateCommand",
+  "postCreateCommand": {
+    "init-submodules": "git submodule update --init --recursive"
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": []
+    },
+    "vscode": {
+      "extensions": [
+        "lf-lang.vscode-lingua-franca",
+        "kieler.klighd-vscode",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools",
+        "marus25.cortex-debug"
+      ]
+    }
+  }
+}
