@@ -31,45 +31,36 @@ QUIET ?= 1
 EVENT_QUEUE_SIZE?=20
 REACTION_QUEUE_SIZE?=20
 
-
 # Skip the reactor-uc include for `docker-*` targets, which run on the host
-# where REACTOR_UC_PATH is not set. Inside the container the variable is set
-# via the Dockerfile and the include works normally.
+# where REACTOR_UC_PATH is not set. Inside the container it's set via the
+# Dockerfile and the include works normally.
 ifeq ($(filter docker-%,$(MAKECMDGOALS)),)
 include $(REACTOR_UC_PATH)/make/riot/riot-lfc.mk
 endif
 
-# ---- Docker dev environment ----
-DOCKER_IMAGE     ?= lf-riot-uc-dev
-DOCKER_USER_UID  ?= $(shell id -u)
-DOCKER_USER_GID  ?= $(shell id -g)
-REACTOR_UC_REF   ?= main
+# ---- Docker build environment ----
+# The image compiles the LF program; flashing stays on the host. VS Code
+# users get the same environment via .devcontainer/.
+DOCKER_IMAGE   ?= lf-riot-uc-dev
+REACTOR_UC_REF ?= main
 
-# Pass through all USB devices (for picotool) plus any present serial TTYs
-# (for bossac). Wildcards are evaluated when make is invoked, so plug the
-# board in before running docker-flash / docker-shell.
+# Run as the host user so bind-mounted build artifacts keep host ownership.
 DOCKER_RUN_FLAGS = --rm -it \
-  -v $(CURDIR):/workspace -w /workspace # \
-#   --device=/dev/bus/usb:/dev/bus/usb \
-#   $(foreach d,$(wildcard /dev/ttyACM*),--device=$(d)) \
-#   $(foreach d,$(wildcard /dev/ttyUSB*),--device=$(d))
+  -u $(shell id -u):$(shell id -g) \
+  -v $(CURDIR):/workspace -w /workspace
 
 .PHONY: docker-build docker-shell
 
 docker-build:
 	docker build \
-	  --build-arg USER_UID=$(DOCKER_USER_UID) \
-	  --build-arg USER_GID=$(DOCKER_USER_GID) \
 	  --build-arg REACTOR_UC_REF=$(REACTOR_UC_REF) \
 	  -t $(DOCKER_IMAGE) .
 
 docker-shell:
 	docker run $(DOCKER_RUN_FLAGS) $(DOCKER_IMAGE) bash
 
-# Targets forwarded into the container as `make <target>`. Listed
-# explicitly so typos like `make docker-flsh` fail on the host instead of
-# silently launching a container with a bogus make invocation.
-DOCKER_FORWARD_TARGETS = all flash term clean
+# Enumerate RIOT build targets to forward to the container. This allows running e.g. `make docker-all` without having to specify the target explicitly as `make docker-all BOARD=native`.
+DOCKER_FORWARD_TARGETS = all clean
 
 .PHONY: $(addprefix docker-,$(DOCKER_FORWARD_TARGETS))
 
