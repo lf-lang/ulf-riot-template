@@ -10,7 +10,7 @@ CFLAGS += -DLF_LOG_LEVEL_ALL=LF_LOG_LEVEL_ERROR
 
 # Execute the LF compiler if build target is "all"
 ifeq ($(firstword $(MAKECMDGOALS)),all)
-  _ :=  $(shell $(REACTOR_UC_PATH)/lfc/bin/lfc-dev src/$(LF_MAIN).lf)
+  _ :=  $(shell $(REACTOR_UC_PATH)/ulfc/bin/ulfc-dev src/$(LF_MAIN).lf)
 endif
 
 # ---- RIOT specific configuration ----
