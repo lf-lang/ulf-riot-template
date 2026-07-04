@@ -1,14 +1,15 @@
-# reactor-uc RIOT-OS Template
+# micro-LF RIOT-OS Template
 
-![RIOT OS Logo](https://www.riot-os.org/assets/img/riot-logo.png)
+![Header](https://micro-lf.org/assets/header/riot.svg)
 
 - **Git:** <https://github.com/riot-os/RIOT>
 - **Supported Boards:** <https://www.riot-os.org/boards.html>
 - **Documentation:** <https://doc.riot-os.org/>
+- **micro-LF Docs:** <https://micro-lf.org>
 
 ______
 
-This is a template for Lingua Franca applications targeting RIOT OS on embedded boards. It is currently configured to support ARM-based boards.
+This is a template for micro-LF applications targeting RIOT OS on embedded boards. It is currently configured to support ARM-based boards.
 
 If you have trouble, please refer to the platform-specific hints towards the end of these instructions.
 
@@ -46,9 +47,11 @@ pip install pyserial
 
 Note that `make` will be installed as `gmake` (see [macOS Hints](#macos-hints)), so all commands below should use `gmake` instead of `make`.
 
-### 1.2. Micro C Target for Lingua Franca
+### 1.2. micro-LF
 
-This template uses [reactor-uc](https://github.com/lf-lang/reactor-uc), the "micro C" target for Lingua Franca. Clone this repo with one of the following commands:
+This template is for running micro-LF applications on the RIOT-OS embedded operating system. It uses [reactor-uc](https://github.com/lf-lang/reactor-uc), the runtime that facilitates the execution.
+
+Clone this repo with one of the following commands:
 
 #### Clone via HTTPS
 
@@ -97,7 +100,7 @@ This creates a new shell in which the cross-compiler is available.
 
 On GitHub, [create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) using [this template](https://github.com/lf-lang/lf-riot-uc-template).
 Then clone this repo onto your development machine.
-This will be your workspace for developing Lingua Franca programs.
+This will be your workspace for developing micro-LF programs.
 
 The RIOT OS sources are provided as a submodule of the new repository, to fetch them do:
 
@@ -107,7 +110,7 @@ git submodule update --init --recursive
 
 ## 3. Configure the Makefile
 
-Your new repository has a `Makefile` in the home directory that governs the build. It is set by default to compile a very simple LF program that you can find in `src/HelloWorld.ulf`.  To compile a different LF program, edit the `Makefile` to point the `LF_MAIN` to your LF program and
+Your new repository has a `Makefile` in the home directory that governs the build. It is set by default to compile a very simple micro-LF program that you can find in `src/HelloWorld.ulf`.  To compile a different micro-LF program, edit the `Makefile` to point the `LF_MAIN` to your program and
 set the `BOARD` variable to specify your board.  By default, these are defined in the `Makefile` as follows:
 
 ```Makefile
@@ -163,7 +166,7 @@ make term
 
 This will display any output your program generates using, for example, `printf`.
 
-You can also get debug output from the `reactor-uc` runtime by changing the following line in the `Makefile`:
+You can also get debug output from the reactor-uc runtime by changing the following line in the `Makefile`:
 
 ```
 CFLAGS += -DLF_LOG_LEVEL_ALL=LF_LOG_LEVEL_ERR
@@ -177,7 +180,7 @@ CFLAGS += -DLF_LOG_LEVEL_ALL=LF_LOG_LEVEL_DEBUG
 
 ## 7. VS Code Extensions
 
-To edit Lingua Franca programs, it is convenient to use the [Lingua Franca extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=lf-lang.vscode-lingua-franca).
+To edit micro-LF programs, it is convenient to use the [Lingua Franca extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=lf-lang.vscode-lingua-franca).
 If you do not have [the Visual Studio Code IDE](https://code.visualstudio.com/download), you can install it using one of (for Linux and macOS, respectively):
 
 ```
